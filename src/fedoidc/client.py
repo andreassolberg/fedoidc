@@ -44,7 +44,7 @@ class Client(oic.Client):
             verify_ssl=True, config=None, client_cert=None,
             federation_entity=None, fo_priority=None):
         oic.Client.__init__(
-            self, client_id=client_id, ca_certs=ca_certs,
+            self, client_id=client_id,
             client_prefs=client_prefs, client_authn_method=client_authn_method,
             keyjar=keyjar, verify_ssl=verify_ssl, config=config,
             client_cert=client_cert)

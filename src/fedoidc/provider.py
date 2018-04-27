@@ -11,7 +11,7 @@ from fedoidc import ClientMetadataStatement
 from fedoidc import KeyBundle
 from fedoidc.signing_service import SigningServiceError
 
-from oic.oauth2 import error
+from oic.oauth2 import error_response
 from oic.oic import provider
 from oic.oic.message import OpenIDSchema
 from oic.oic.message import RegistrationRequest
@@ -38,7 +38,7 @@ class Provider(provider.Provider):
             signed_jwks_uri=''):
         provider.Provider.__init__(
             self, name, sdb, cdb, authn_broker, userinfo, authz,
-            client_authn, symkey, urlmap=urlmap, ca_certs=ca_certs,
+            client_authn, symkey, urlmap=urlmap,
             keyjar=keyjar, hostname=hostname, template_lookup=template_lookup,
             template=template, verify_ssl=verify_ssl, capabilities=capabilities,
             schema=schema, jwks_uri=jwks_uri, jwks_name=jwks_name,
@@ -177,7 +177,7 @@ class Provider(provider.Provider):
         except Exception:
             message = traceback.format_exception(*sys.exc_info())
             logger.error(message)
-            resp = error('service_error', message)
+            resp = error_response('service_error', message)
 
         return resp
 
@@ -216,7 +216,7 @@ class Provider(provider.Provider):
         try:
             request.verify()
         except Exception as err:
-            return error('Invalid request')
+            return error_response('Invalid request')
 
         logger.info(
             "registration_request:{}".format(sanitize(request.to_dict())))
@@ -228,7 +228,7 @@ class Provider(provider.Provider):
             ms = self.federation_entity.pick_by_priority(les)
             self.federation = ms.fo
         else:  # Nothing I can use
-            return error(error='invalid_request',
+            return error_response(error='invalid_request',
                          descr='No signed metadata statement I could use')
 
         _pc = ms.protected_claims()

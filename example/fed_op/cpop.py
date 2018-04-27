@@ -41,7 +41,7 @@ def conv_response(resp):
                     if morsel[key]:
                         cookie[name][key] = morsel[key]
 
-    _stat = int(resp._status.split(' ')[0])
+    _stat = int(resp._status_code)
     #  if self.mako_lookup and self.mako_template:
     #    argv["message"] = message
     #    mte = self.mako_lookup.get_template(self.mako_template)
