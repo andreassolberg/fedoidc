@@ -366,15 +366,14 @@ Hedberg, et al.          Expires August 4, 2018                 [Page 6]
    {
      "redirect_uris": ["https://example.com/rp1"],
      "metadata_statements": {
-       'https://example.com':
+       "https://example.com":
          {
            "rp_scopes": ["openid", "eduperson"],
            "response_types": ["code", "code id_token"],
            "contacts": ["rp_helpdesk@example.com"],
            "redirect_uris": ["https://example.com/rp1"],
-           "response_types: ["code"]
            "metadata_statements" : {
-             'https://example.com':
+             "https://example.com":
                {
                  "logo_uri": "https://example.com/logo.jpg",
                  "policy_uri": "https://example.com/policy.html",

@@ -52,7 +52,9 @@ A Metadata Signing Service (MDSS) has control over the private part of the Feder
 
 A MDSS will make the following public API calls available:
 
-- GET */getms/{entityID}*. Returns a signed JWT containing a collection of signed MS for *entityID*.
+- GET */getsmscol/{context}/{entityID}*. Returns a signed JWT containing a
+  collection of signed MS for *entityID* for a specific context *context*.
+
   This collection is a JSON object whose keys are federation IDs and the values are URLs where the
   corresponding Signed Metadata statements can be found.
 
@@ -60,11 +62,12 @@ A MDSS will make the following public API calls available:
    of the FO and "https://rp.example.com/ms.jws" is the RP's entity ID::
 
     {
-        "https://swamid.sunet.se/": "https://mdss.sunet.se/getms/https%3A%2F%2Frp.example.com%2Fms.jws/https%3A%2F%2Fswamid.sunet.se%2F"
+        "https://swamid.sunet.se/": "https://mdss.sunet.se/getsms/https%3A%2F%2Frp.example.com%2Fms.jws/https%3A%2F%2Fswamid.sunet.se%2F"
     }
 
-- GET */getms/{entityID}/{FO}*. Returns the Signed Metadata Statement as a signed
-  JSON Web Token (`JWT`_) for *entityID* in the federation *FO*.
+- GET */getsms/{context}/{entityID}/{FO}*. Returns the Signed Metadata
+  Statement as a signed JSON Web Token (`JWT`_) for *entityID* in the
+  federation *FO* for context *context*.
 
 ------------------------------
 Service provided by each RP/OP
@@ -84,22 +87,22 @@ be followed.
 
 The steps are
 
-1 The RP sends
+1 The entity sends
 
     - the public part of its signing key,
-    - the URL the Federation Operator (FO) should use to fetch the RP's
+    - the URL the Federation Operator (FO) should use to fetch the entity's
       metadata statement and
     - an entity ID (for an OP this is the issuer ID). The entityID SHOULD be 
       the URL mentioned above. The entity_id MUST be part of the metadata
-      the RP makes available to the FO.
+      an RP makes available to the FO.
 
 2 The FO fetched the metadata statement, which is represented as a
-  signed JWT, signed by the RPs private key, and verifies the signature.
-  The public part of the RP's signing key are expected to be part
+  signed JWT, signed by the entity's private key, and verifies the signature.
+  The public part of the entity's signing key are expected to be part
   of the metadata statement.
 3 If the FO accepts the metadata statement as syntactically correct and
   adhering to the Federations policy it will add the payload of the
-  signed metadata statement it received from the RP 
+  signed metadata statement it received from the entity
   to the list of metadata statements that can be signed by the MDSS.
   Before it adds it to the list the FO may modify the metadata statement.
 
@@ -117,7 +120,7 @@ the federation. This is what happens then:
 
 1 When the RP needs to construct a client registration request it will
   ask the FO for the current set of Federations/Communities it belongs to.
-  It does that by doing a GET on */getms/{entityID}*.
+  It does that by doing a GET on */getsmscol/{entityID}*.
   As shown above it will receive a JSON object with references to signed
   metadata statements. Now some claims in the client
   registration request may not be know before the RP knows which OP it talks to.
@@ -132,7 +135,7 @@ the federation. This is what happens then:
     {
         'redirect_uris': ['https://rp.example.org/8670193851956608396'],
         'metadata_statement_uri': {
-            "https://swamid.sunet.se/": "https://mdss.sunet.se/getms/https%3A%2F%2Frp.example.com%2Fms.jws/https%3A%2F%2Fswamid.sunet.se%2F"
+            "https://swamid.sunet.se/": "https://mdss.sunet.se/getsms/https%3A%2F%2Frp.example.com%2Fms.jws/https%3A%2F%2Fswamid.sunet.se%2F"
         }
     }
 
