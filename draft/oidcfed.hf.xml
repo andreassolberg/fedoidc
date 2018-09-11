@@ -106,28 +106,41 @@
 
   <middle>
     <section anchor="Introduction" title="Introduction">
-      <t>The OpenID Connect specification defines how a Relying Party and an
-      OpenID Connect Provider can exchange information dynamically about each
-      other. This information is necessary for future successful OIDC
-      communication.</t>
+      <t>This specification describes how two entities that would like to
+      interact can dynamically fetch and and resolve trust and metadata for a
+      given protocol, by the use of third party trust issuers. </t>
 
-      <t>One problem with using dynamic discovery and registration is that the
-      correctness of the information that is exchanged cannot be easily
-      verified by the recipient as it is self-asserted.</t>
+      <t>An identity federation can be realized using this specification by
+      the use of one or more levels of trust issuers. A trust issuer is a
+      entity, which main purpose is to issue trust statements about OpenID
+      consumers and providers. </t>
 
-      <t>Another problem that has been raised is the dependency on TLS as the
-      sole protection against attacks on the transferred information. These
-      last couple of years a number of problems with OpenSSL, which is
-      probably the most widely used TLS library, have been discovered that put
-      reasonable doubt into this dependency.</t>
+      <t>For an entity to take part in an Identity Federation, it has to go
+      through the prodecure of being accepted by a federation, such that the
+      federation may issue an statement regarding this specific entity, and
+      delegate trust. The entity will also typically configure a local trust
+      root to include the identifier and the certificate of the trusted third
+      party &ndash; the federation. These two steps are usually sufficient for
+      the entity to be able to interact with other entities in the federation,
+      where metadata and trust is dynamically resolved.</t>
 
-      <t>We are extending Signed Metadata, as introduced by <xref
-      target="I-D.ietf-oauth-discovery"> OAuth 2.0 Authorization Server
-      Metadata</xref>, to create what we call metadata statements. Metadata
-      statements together with the use of a trusted third party (that verifies
-      and enforces some common policy), can be used to transfer verified data
-      and establish trust in the data between relying parties and
-      provider.</t>
+      <t>All entities involved in OpenID Connect Federation, including the
+      trust issuers, will have their own unique identifier. This identifier is
+      used to dynamically fetch entity statements. As a complete chain of
+      entity statements is obtained, connecting the local trust root to the
+      target entity, the entity may resolve the resulting trusted metadata, by
+      flattening metafata found in the trust chain.</t>
+
+      <t>The OpenID Connect Federation trust chains are relying on
+      cryptographically signed JWT documents, and the trust chain does not at
+      all rely on TLS in order to establish trust. </t>
+
+      <t>OpenID Connect Federation may very well be used for other purposes
+      than building traditional identity federations. One of them could be to
+      build an OpenID Connect deployment where the keyrollover process does
+      not fall back to TLS. Another could be allowing traditionally public /
+      native clients, such as medical devices, to genereate its own key pair,
+      and use asymmetric crypto to increase the overall security.</t>
     </section>
 
     <section title="Requirements Language">
@@ -137,8 +150,14 @@
       target="RFC2119">RFC 2119</xref>.</t>
     </section>
 
-    <section title="Entity Statement">
-      <t/>
+    <section title="Entity Statement ">
+      <t>We are extending Signed Metadata, as introduced by <xref
+      target="I-D.ietf-oauth-discovery"> OAuth 2.0 Authorization Server
+      Metadata</xref>, to create what we call metadata statements. Metadata
+      statements together with the use of a trusted third party (that verifies
+      and enforces some common policy), can be used to transfer verified data
+      and establish trust in the data between relying parties and
+      provider.</t>
     </section>
 
     <section anchor="entity_metadata" title="Metadata Statement">
