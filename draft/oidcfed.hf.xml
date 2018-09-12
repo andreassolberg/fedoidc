@@ -151,6 +151,71 @@
     </section>
 
     <section title="Entity Statement ">
+      <t>An entity statement is always a signed JWT. An entity statement is
+      issued by the <spanx style="verb">iss</spanx>, and the statement
+      considers the subject entity, the <spanx style="verb">sub</spanx>. To be
+      able to resolve trust and metadata, one need to know the identifier of
+      the target entity &ndash; we refer to this as the leaf entity. The leaf
+      entity will always sign a statement about itself, and give some hints to
+      other entities that may want to issue statements about itself. All other
+      entities in a trust chain we refer to as intermediate entities. The
+      local configured trust root, we refer to as the trust anchor.</t>
+
+      <t><list style="hanging">
+          <t hangText="iss">REQUIRED. The entity identifier of the entity that
+          issues the statement. If the iss and the sub is identical, the
+          issuer is making a statement about itself.</t>
+
+          <t hangText="sub">REQUIRED. The entity identifier of the subject</t>
+
+          <t hangText="jwks">REQUIRED. A <xref target="RFC7517">JSON Web Key
+          Set (JWKS)</xref> representing the public part of the subject
+          entity's signing keys. <vspace blankLines="1"/> The keys that can be
+          found here or at <spanx style="verb">signing_keys_uri</spanx> must
+          not be confused with the keys that an OIDC entity is using for
+          Authorization/AccessToken/RefreshToken/UserInfo requests and
+          responses. Those keys are found at <spanx style="verb">jwks_uri</spanx>
+          or in the case of relying party registration also possibly as values
+          to <spanx style="verb">jwks</spanx>. The signing keys are used to
+          sign metadata statements and can also be used by an OP to sign a
+          relying party registration request response.</t>
+
+          <t hangText="metadata"><vspace/> OPTIONAL. JSON object where the
+          names are federation identifiers <!-- TBD xref to definition needed here-->
+          and the values are signed JSON documents containing compounded
+          metadata statements <xref target="CompoundedMetadataStatement"/>
+          rooted in that federation. There is one value per name.</t>
+
+          <t hangText="federation_usage"><vspace/> OPTIONAL. Metadata
+          statements that are used in different contexts will contain
+          different parameters. For example, information that an OP publishes
+          about itself is not the same as what an RP wants to register. This
+          together with the differences in the roles between an OP and an RP,
+          means that policies for RPs will not be the same as for OPs. There
+          is therefore a need for tagging the Metadata statement such that a
+          Metadata statement intended to be used in one context cannot be used
+          in another. This is the reason for the <spanx style="verb">federation_usage</spanx>
+          parameter. This parameter can be used to limit the usage to a
+          specific context. The <spanx style="verb">federation_usage</spanx>
+          value is a case sensitive string. The values specified in this
+          document are 'discovery', 'registration' and 'response'. The
+          corresponding contexts are: <list style="hanging">
+              <t hangText="discovery"><vspace/> <xref
+              target="OpenID.Discovery"> Provider Information Discovery
+              Response </xref></t>
+
+              <t hangText="registration"><vspace/> <xref
+              target="OpenID.Registration"> Client Registration Request
+              </xref></t>
+
+              <t hangText="response"><vspace/> <xref
+              target="OpenID.Registration"> Client Registration Request
+              response </xref></t>
+            </list></t>
+        </list></t>
+
+      <t/>
+
       <t>We are extending Signed Metadata, as introduced by <xref
       target="I-D.ietf-oauth-discovery"> OAuth 2.0 Authorization Server
       Metadata</xref>, to create what we call metadata statements. Metadata
@@ -158,6 +223,14 @@
       and enforces some common policy), can be used to transfer verified data
       and establish trust in the data between relying parties and
       provider.</t>
+    </section>
+
+    <section title="Fetching entity statements">
+      <t/>
+    </section>
+
+    <section title="Resolving trust chain and metadata">
+      <t/>
     </section>
 
     <section anchor="entity_metadata" title="Metadata Statement">
@@ -722,7 +795,7 @@ def unpack(jwt, sign_keys):
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
-      <t><list style="empty">
+      <t><list style="symbols">
           <t>Heather Flanagan</t>
 
           <t>The JRA3T3 task force of GEANT4-2</t>
