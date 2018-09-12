@@ -224,7 +224,7 @@
       </section>
     </section>
 
-    <section title="Metadata">
+    <section anchor="metadata" title="Metadata">
       <t>The OpenID Connect Federations specification does allow new metadata
       types to be defined, to support use cases outside OpenID Connect. The
       metadata type identifier will uniquely identify which metadata
