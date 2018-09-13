@@ -290,7 +290,33 @@
     </section>
 
     <section title="Fetching entity statements">
-      <t/>
+      <t>In order to fetch entity statements, you need to know the identifier
+      of the entity to ask, and the identifier of the entity that you want the
+      statement to be about. Typically you will start fetching entity
+      statements before you initiate contact with another entity, where the
+      identifier of this entity is all the information you have. Then you will
+      ask this identifier for entity statements about it self.</t>
+
+      <t>Fetching entity statements is performed in two steps. First WebFinger
+      is used to resolve the entity statement API endpoint of the entity to
+      ask. Then the API endpoint is used to fetch one or more entity
+      statements.</t>
+
+      <section title="Using WebFinger to find the Entity Statement API endpoint">
+        <t>The entity is discovered using <xref
+        target="webfinger">WebFinger</xref> [RFC7033], with the rel value:</t>
+
+        <t>http://oauth.net/specs/federation/1.0/entity</t>
+
+        <t>The provider performs normalization rules to the entity identifier
+        to determine the hostname. The client_id URL will be the resource. In
+        example the entity identifier https://serviceprovider.org/application
+        may result in the following WebFinger request:</t>
+      </section>
+
+      <section title="Fetching Entity Statements from the API endpoint">
+        <t/>
+      </section>
     </section>
 
     <section title="Resolving trust chain and metadata">
@@ -790,6 +816,8 @@ def unpack(jwt, sign_keys):
       <?rfc include="reference.RFC.6962"?>
 
       <?rfc include="reference.RFC.6749"?>
+
+      <?rfc include="reference.RFC.7033"?>
 
       <?rfc include="http://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-ietf-oauth-discovery-08.xml" ?>
 
