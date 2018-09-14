@@ -1740,7 +1740,8 @@ def unpack(jwt, sign_keys):
       <section title="Flattening the Compounded Metadata Statement">
         <t>Once you have a verified compounded metadata statement, you have to
         flatten it to get a useful metadata statement. To do this you can, for
-        instance, use the method outlined in <xref target="entityMD"/></t>
+        instance, use the method outlined in <xref
+        target="flattening-metadata"/></t>
       </section>
     </section>
 
