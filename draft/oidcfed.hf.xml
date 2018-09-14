@@ -304,14 +304,13 @@
 
       <section title="Using WebFinger to find the Entity Statement API endpoint">
         <t>The entity is discovered using <xref
-        target="webfinger">WebFinger</xref> [RFC7033], with the rel value:</t>
-
-        <t>http://oauth.net/specs/federation/1.0/entity</t>
+        target="RFC7033">WebFinger</xref>, with the <spanx style="verb">rel</spanx>
+        value: <spanx style="verb">https://openid.net/specs/federation/1.0/entity</spanx></t>
 
         <t>The provider performs normalization rules to the entity identifier
-        to determine the hostname. The client_id URL will be the resource. In
-        example the entity identifier https://serviceprovider.org/application
-        may result in the following WebFinger request:</t>
+        to determine the hostname. In example the entity identifier
+        https://serviceprovider.org/application may result in the following
+        WebFinger request:</t>
       </section>
 
       <section title="Fetching Entity Statements from the API endpoint">
