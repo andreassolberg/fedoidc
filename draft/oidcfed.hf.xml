@@ -168,6 +168,11 @@
 
           <t hangText="sub">REQUIRED. The entity identifier of the subject</t>
 
+          <t hangText="iat">REQUIRED. The time the statement was issued.</t>
+
+          <t hangText="exp">REQUIRED. The time the signed statement
+          expires.</t>
+
           <t hangText="jwks">REQUIRED. A <xref target="RFC7517">JSON Web Key
           Set (JWKS)</xref> representing the public part of the subject
           entity's signing keys. <vspace blankLines="1"/>These keys is used
@@ -204,6 +209,45 @@
       <t>The entity statement is signed using the private key of the issuer
       entity, in the form of a <xref target="RFC7515">JSON Web Signature
       (JWS)</xref>.</t>
+
+      <figure>
+        <preamble>Non-normative example of a entity statement, before
+        serialization and adding a signature.</preamble>
+
+        <artwork><![CDATA[{
+  "iss": "https://feide.no",
+  "sub": "https://ntnu.no",
+  "iat": 1516239022,
+  "exp": 1516298022,
+  "metadata": {
+    "openid-provider": {
+      "issuer": "https://ntnu.no",
+      "organization": "NTNU",
+      "id_token_signing_alg_values_supported": ["RS256", "RS384", "RS512"]
+    },
+    "openid-client": {
+      "organization": "NTNU",
+      "grant_types_supported": ["authorization_code", "implicit"],
+      "scopes": ["openid", "profile", "email", "phone"]
+    }
+  },
+  "jwks": [
+    {
+      "alg": "RS256",
+      "e": "AQAB",
+      "ext": true,
+      "key_ops": ["verify"],
+      "kid": "key1",
+      "kty": "RSA",
+      "n": "pnXBOusEANuug6ewezb9J_...",
+      "use": "sig"
+    }
+  ],
+  "authorityHints": ["https://edugain.org/federation"]
+}]]></artwork>
+
+        <postamble>(postamble)</postamble>
+      </figure>
 
       <section title="The trust anchor">
         <t>In order to configure trust when deploying a software component, it
