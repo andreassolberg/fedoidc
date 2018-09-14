@@ -15,7 +15,7 @@
 <rfc category="std" docName="openid-connect-federation-1_0" ipr="none">
   <?rfc toc="yes" ?>
 
-  <?rfc tocdepth="5" ?>
+  <?rfc tocdepth="2" ?>
 
   <?rfc symrefs="yes" ?>
 
@@ -180,7 +180,7 @@
           used. In OpenID Connect, the jwks keys cannot be used within the
           Authorization/AccessToken/RefreshToken/UserInfo requests and
           responses. Instead OpenID Connect specific metadata includes claims
-          for this purpose. </t>
+          for this purpose.</t>
 
           <t hangText="metadata">REQUIRED. JSON object including protocol
           specific metadata claims that represent the leaf node. To resolve
@@ -198,7 +198,7 @@
 
           <t hangText="authorityHints">OPTIONAL. A JSON list of identifiers of
           intermediate entities that may issue an entity statement about the
-          issuer entity. This list may be used in order to </t>
+          issuer entity. This list may be used in order to</t>
         </list></t>
 
       <t>The entity statement is signed using the private key of the issuer
@@ -231,11 +231,11 @@
       specification to interpret.</t>
 
       <t>The metadata document MUST be a JSON document. Beyound that there is
-      no common </t>
+      no common</t>
 
       <t>Metadata used in OpenID Connect Federations typically re-use existing
       metadata standards. If needed extend the metadata schema is extended
-      with additional properties relevant in a federated context. </t>
+      with additional properties relevant in a federated context.</t>
 
       <section title="OpenID Connect Relying Party Metadata">
         <t>The metadata type identifier is <spanx style="verb">openid-client</spanx>.</t>
@@ -329,7 +329,7 @@ Host: serviceprovider.org]]></artwork>
         </figure>
 
         <figure>
-          <preamble>The response includes </preamble>
+          <preamble>The response includes</preamble>
 
           <artwork><![CDATA[HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
@@ -400,7 +400,7 @@ Content-Type: application/json
 ["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJodHRwczovL3NlcnZpY2Vwcm92aW..."]
 ]]></artwork>
 
-            <postamble>(the signed JWT is truntated) </postamble>
+            <postamble>(the signed JWT is truntated)</postamble>
           </figure>
         </section>
 
@@ -442,7 +442,7 @@ Content-Type: application/json
         this process (loop prevention).</t>
 
         <t>The result of this operation should be a flat list of entity
-        statements. </t>
+        statements.</t>
       </section>
 
       <section title="Finding trust chains">
