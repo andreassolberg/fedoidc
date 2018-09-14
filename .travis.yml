@@ -23,6 +23,7 @@ deploy:
   bucket: openid-connect
   local-dir: public
   skip_cleanup: true
+  overwrite: true
   acl: public-read
   on:
     repo: andreassolberg/fedoidc
