@@ -1,8 +1,11 @@
 sudo: required
+
 services:
   - docker
+
 install:
 - "./xml2rfc.sh"
+
 deploy:
   provider: gcs
   access_key_id: GOOGN4TO2PHZD2BOMBDOM7VX
