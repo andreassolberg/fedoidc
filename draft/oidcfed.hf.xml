@@ -302,24 +302,160 @@
       ask. Then the API endpoint is used to fetch one or more entity
       statements.</t>
 
-      <section title="Using WebFinger to find the Entity Statement API endpoint">
+      <section title="Using WebFinger to find the Metadata API endpoint">
         <t>The entity is discovered using <xref
         target="RFC7033">WebFinger</xref>, with the <spanx style="verb">rel</spanx>
-        value: <spanx style="verb">https://openid.net/specs/federation/1.0/entity</spanx></t>
+        value: <spanx style="verb">https://openid.net/specs/federation/1.0/entity</spanx>.
+        The <spanx style="verb">resouce</spanx> parameter is set the entity
+        identifier from whom we would like to issue entity statements.</t>
 
         <t>The provider performs normalization rules to the entity identifier
         to determine the hostname. In example the entity identifier
         https://serviceprovider.org/application may result in the following
         WebFinger request:</t>
+
+        <figure>
+          <preamble>The following non-normative example is a WebFinger request
+          to discover the Metadata API endpoint of the entity <spanx
+          style="verb">https://serviceprovider.org/application</spanx>.</preamble>
+
+          <artwork><![CDATA[GET /.well-known/webfinger?
+  resource=https%3A%2F%2Fserviceprovider.org%2Fapplication&
+  rel=https%3A%2F%2Fopenid.net%2Fspecs%2Ffederation%2F1.0%2Fentity
+  HTTP/1.1
+Host: serviceprovider.org]]></artwork>
+
+          <postamble>(postamble)</postamble>
+        </figure>
+
+        <figure>
+          <preamble>The response includes </preamble>
+
+          <artwork><![CDATA[HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+Content-Type: application/jrd+json
+
+{
+  "subject" : "https://serviceprovider.org/application",
+  "links" :
+  [
+    {
+      "rel" : "https://openid.net/specs/federation/1.0/entity",
+      "href" : "https://serviceprovider.org/metadata-api"
+    }
+  ]
+}]]></artwork>
+
+          <postamble>(postamble)</postamble>
+        </figure>
       </section>
 
-      <section title="Fetching Entity Statements from the API endpoint">
-        <t/>
+      <section title="Using the Metadata API endpoint">
+        <t>Next, after the metadata API endpoint URL is resolved using
+        WebFinger, the metadata API can be used to fetch entity statements
+        about specific entities. The metadata API endpoint may offer multiple
+        services.</t>
+
+        <section title="Fetching Entity Statements">
+          <t>The HTTP GET request to the metadata API endpoint takes the
+          following query string parameters:</t>
+
+          <t><list style="hanging">
+              <t hangText="target">REQUIRED. The entity identifier of the
+              target entity for which to issue metadata.</t>
+
+              <t hangText="prefetch">OPTIONAL. If left out, it is assumed to
+              be <spanx style="verb">false</spanx>. If set to <spanx
+              style="verb">true</spanx>, it indicates that the requestor would
+              like the API to prefetch entity statements that may be
+              relevant.</t>
+            </list>As long as the request is understood and correct, the
+          response MUST be a JSON array including signed entity statements.
+          The content type MUST be set to <spanx style="verb">application/json</spanx>.
+          If the issuing entity does not reckognize the target, it should
+          return an empty JSON array. The returned list of entity statements
+          SHOULD include a statement issued by the issuing entity about the
+          entity represented in the target parameter. The issuing entity may
+          also decide to prefetch additional entity statements that may be
+          relevant to the requestor.</t>
+
+          <figure>
+            <preamble>The following is a non-normative example of an API
+            request for entity statement:</preamble>
+
+            <artwork><![CDATA[GET /metadata-api?target= HTTP/1.1
+Host: serviceprovider.org
+]]></artwork>
+
+            <postamble>(postamble)</postamble>
+          </figure>
+
+          <figure>
+            <preamble>resulting in the following response:</preamble>
+
+            <artwork><![CDATA[200 OK
+Last-Modified: Wed, 22 Jul 2018 19:15:56 GMT
+Content-Type: application/json
+
+["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJodHRwczovL3NlcnZpY2Vwcm92aW..."]
+]]></artwork>
+
+            <postamble>(the signed JWT is truntated) </postamble>
+          </figure>
+        </section>
+
+        <section title="Trust negotiation">
+          <t>TBD. Resolving metadata for a specifc type of metadata, for a
+          given peer. In example the relying party may ask a specific provider
+          to resolve the relying party openid-client metadata with its own
+          configured trust root. The result may tell to what operations, what
+          scopes and what claims the relying party is allowed to use.</t>
+        </section>
+
+        <section title="Entity listings">
+          <t>TBD. Return an JSON List of all entities that the entity may
+          issue statements about.</t>
+        </section>
       </section>
     </section>
 
     <section title="Resolving trust chain and metadata">
-      <t/>
+      <t>An entity seeking to establish trust with a remote peer, will start
+      with the knowledge of the remote peer entity identifier and with a
+      locally configured trust anchor. The seeking entity will first have to
+      fetch sufficient entity statements to establish a chain of trust from
+      the remote peer and the locally configured trust anchor. Afterwards the
+      seeking entity will have to validate the trust chain, and choose one if
+      there are multiple valid trust chains.</t>
+
+      <section title="Fetching entity statements to establish a trust chain">
+        <t>The seeking entity should always start to ask the remote peer
+        entity about its self issued entity statement. This entity statement
+        MAY contain an list of intermediate entities in the authorityHints
+        claim.</t>
+
+        <t>The seeking entity may iterate through the list of authorityHints,
+        and request entity statement for the remote peer from each of the
+        intermediate. It may further iterate intermediate entity statements
+        for further their authorityHints, and so on. The seeking entity should
+        never attempt to fetch entity statements it already have fetched in
+        this process (loop prevention).</t>
+
+        <t>The result of this operation should be a flat list of entity
+        statements. </t>
+      </section>
+
+      <section title="Finding trust chains">
+        <t/>
+      </section>
+
+      <section title="Validating the trust chains">
+        <t/>
+      </section>
+
+      <section title="Choosing one of the valid trust chains">
+        <t/>
+      </section>
     </section>
 
     <section anchor="flattening-metadata" title="Flattening compound metadata">
@@ -1625,6 +1761,11 @@ Qu2jiG6rZQ"
 
     <section anchor="History" title="Document History">
       <t>[[ To be removed from the final specification ]]</t>
+
+      <t>-05 <list style="symbols">
+          <t>A major rewrite, introducing WebFinger, entity statements and
+          more.</t>
+        </list></t>
 
       <t>-04 <list style="symbols">
           <t>Changed client metadata names <spanx style="verb">scopes</spanx>
