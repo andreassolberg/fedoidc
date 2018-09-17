@@ -201,9 +201,12 @@
           metadata</xref>. An entity statement may contain multiple metadata
           statement, but only one for each metadata type.</t>
 
-          <t hangText="authorityHints">OPTIONAL. A JSON list of identifiers of
-          intermediate entities that may issue an entity statement about the
-          issuer entity. This list may be used in order to</t>
+          <t hangText="authorityHints">OPTIONAL. A JSON object where the keys
+          are the intermediate entities that may issue an entity statement
+          about the issuer entity. The value is a JSON list of entities that
+          is further up in the trust chain. The JSON array can be used to
+          simplify the selection of trust chains without the need for fetching
+          all possible authority hints.</t>
         </list></t>
 
       <t>The entity statement is signed using the private key of the issuer
