@@ -15,7 +15,7 @@
 <rfc category="std" docName="openid-connect-federation-1_0" ipr="none">
   <?rfc toc="yes" ?>
 
-  <?rfc tocdepth="2" ?>
+  <?rfc tocdepth="3" ?>
 
   <?rfc symrefs="yes" ?>
 
@@ -333,7 +333,7 @@
       </section>
     </section>
 
-    <section title="Fetching entity statements">
+    <section anchor="fetching-es" title="Fetching entity statements">
       <t>In order to fetch entity statements, you need to know the identifier
       of the entity to ask, and the identifier of the entity that you want the
       statement to be about. Typically you will start fetching entity
@@ -463,7 +463,7 @@ Content-Type: application/json
       </section>
     </section>
 
-    <section title="Resolving trust chain and metadata">
+    <section anchor="resolve-trust" title="Resolving trust chain and metadata">
       <t>An entity seeking to establish trust with a remote peer, will start
       with the knowledge of the remote peer entity identifier and with a
       locally configured trust anchor. The seeking entity will first have to
@@ -610,10 +610,9 @@ Content-Type: application/json
       <t>How the relying party establish trust with a provider, and how the
       provider establishes trust with the relying party is independent and
       does not rely or interfer with eachother. It is possible to have
-      different trust roots, and it is possible to have a federation for
-      providers only or relying parties only. Building federations to support
-      various use cases and federation scenarios is left outside of this
-      specification.</t>
+      different trust roots, and to have a federation for providers only or
+      relying parties only. Building federations to support various use cases
+      and federation scenarios is left outside of this specification.</t>
 
       <section title="Establishing trust with an OpenID Provider">
         <t>Prior to establishing trust with a specific provider, the RT MUST
@@ -624,14 +623,30 @@ Content-Type: application/json
         target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref> with the
         e-mail address of the user.</t>
 
-        <t>The OP MUST publish its provider metadata as specified by <xref
-        target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>. The RP
-        makes a standard OpenID Provider Configuration Request. The OP
-        responds with its provider configuration and the additional metadata
-        parameters specified above.</t>
+        <t>The RP will have a preconfigured trust anchor. The RP will then
+        need to fetch and resolve trust and metadata for the OP. The RP will
+        fetch and resolve entity statements for the OP, where the entity
+        identifier is the OpenID Provider Issuer value. The RP will is fetch
+        trust and metadata as described in <xref target="fetching-es">Fetching
+        entity statements</xref>. The RP will then resolve the trust chain and
+        metadata according to <xref target="resolve-trust">resolving trust
+        chain and metadata</xref>. The RP will resolve metadata of type
+        openid-provider, and perform the metadata flattening process in order
+        to obtain a single JSON metadata document analog to that obtained from
+        the OpenID Connect Issuer discovery process in <xref
+        target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>.</t>
 
-        <t>The OP SHOULD have the complete response signed by its superior in
-        the signing chain and MAY have them signed in advance.</t>
+        <t>Each time an RP will resolve the trust chain and validate metadata
+        these additional OpenID specific validation steps MUST be
+        performed:</t>
+
+        <t><list style="symbols">
+            <t>Verify that the issuser claim from the OP metadata is identical
+            to the entity identifier used to resolve metadata.</t>
+          </list></t>
+
+        <t>For an OP to support OpenID Connect Federation it MUST WebFinger
+        and Metadata API endpoints according to this specfication.</t>
       </section>
 
       <section title="Establishing trust with an OpenID Relying Party">
