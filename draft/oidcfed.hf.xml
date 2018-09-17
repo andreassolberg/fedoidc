@@ -607,93 +607,122 @@ Content-Type: application/json
       federation across a large number of provider and relying parties in a
       scalable and dynamic fashion.</t>
 
-      <t>There is two alternative approaches to etablish trust between a
-      Relying Party and a Provider. Members of a federation or a community
-      should agree upon which approach to use. While implementations should
-      support both methods, deployments may choose to disable the use one of
-      them.</t>
+      <t>How the relying party establish trust with a provider, and how the
+      provider establishes trust with the relying party is independent and
+      does not rely or interfer with eachother. It is possible to have
+      different trust roots, and it is possible to have a federation for
+      providers only or relying parties only. Building federations to support
+      various use cases and federation scenarios is left outside of this
+      specification.</t>
 
-      <section title="Explicit Registration">
-        <t>This method involves performing an explicit registration of a new
-        client the first time a Relying Party interacts with an OpenID
-        Provider using <xref target="OpenID.Registration">OpenID Connect
-        Dynamic Client Registration 1.0</xref>.</t>
+      <section title="Establishing trust with an OpenID Provider">
+        <t>Prior to establishing trust with a specific provider, the RT MUST
+        know the entity identifier of the relevant OP. Different use cases
+        mandates different approaches on how to choose a specific provider.
+        Examples includes letting the user choose from a list of providers
+        available in a federation, or using <xref
+        target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref> with the
+        e-mail address of the user.</t>
 
-        <figure>
-          <preamble>The trust between the entities is established using the
-          above described extensions in the first two steps of the
-          communication between an RP and an OP. How the RP found the OP in
-          the first place is out of scope for this document.</preamble>
+        <t>The OP MUST publish its provider metadata as specified by <xref
+        target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>. The RP
+        makes a standard OpenID Provider Configuration Request. The OP
+        responds with its provider configuration and the additional metadata
+        parameters specified above.</t>
 
-          <artwork><![CDATA[------                             ------
+        <t>The OP SHOULD have the complete response signed by its superior in
+        the signing chain and MAY have them signed in advance.</t>
+      </section>
+
+      <section title="Establishing trust with an OpenID Relying Party">
+        <t>There is two alternative approaches to how a Provider may establish
+        trust with a relying party. Members of a federation or a community
+        should agree upon which approach to use. While implementations should
+        support both methods, deployments may choose to disable the use one of
+        them. The two alternatives are</t>
+
+        <t><list style="symbols">
+            <t><spanx>Explicit registration</spanx> make use of dynamic client
+            registration</t>
+
+            <t><spanx>Implicit registration</spanx> involves using the entity
+            identifier as a client_id, and send an authentication request
+            without prior pre-registration. Trust is established as part of
+            processing the incomming authentication request.</t>
+          </list></t>
+
+        <section title="Explicit Registration">
+          <t>This method involves performing an explicit registration of a new
+          client the first time a Relying Party interacts with an OpenID
+          Provider using <xref target="OpenID.Registration">OpenID Connect
+          Dynamic Client Registration 1.0</xref>.</t>
+
+          <figure>
+            <preamble>The trust between the entities is established using the
+            above described extensions in the first two steps of the
+            communication between an RP and an OP. How the RP found the OP in
+            the first place is out of scope for this document.</preamble>
+
+            <artwork><![CDATA[------                             ------
 |    | <--- 1) Discovery --------> |    |
 | RP | <--- 2) Registration -----> | OP |
 |    |                             |    |
 ------                             ------     ]]></artwork>
 
-          <postamble>After the discovery and registration is completed a first
-          time, those steps SHOULD only be repeated if any changes occur (see
-          notes in respective sections below).</postamble>
-        </figure>
+            <postamble>After the discovery and registration is completed a
+            first time, those steps SHOULD only be repeated if any changes
+            occur (see notes in respective sections below).</postamble>
+          </figure>
 
-        <section title="Provider Discovery">
-          <t>The OP MUST publish its provider metadata as specified by <xref
-          target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref>. The
-          RP makes a standard OpenID Provider Configuration Request. The OP
-          responds with its provider configuration and the additional metadata
-          parameters specified above.</t>
+          <section anchor="Clireg" title="Client Registration">
+            <t>The OP MUST support dynamic relying party registration as
+            described in <xref target="OpenID.Registration">OpenID Connect
+            Dynamic Client Registration 1.0 </xref>. The RP makes a Client
+            Registration Request including the additional metadata specified
+            above.</t>
 
-          <t>The OP SHOULD have the complete response signed by its superior
-          in the signing chain and MAY have them signed in advance.</t>
+            <t>The RP SHOULD have the complete request signed by its superior
+            in the signing chain and MAY have it signed in advance.</t>
+          </section>
+
+          <section anchor="cliregresp" title="Client Registration Response">
+            <t>It is unlikely that an OP can prepare a number of signed
+            Metadata statements representing relying party registration
+            responses in advance. Still if the OP wants to have the whole
+            response signed it has two choices. Either the superior signer has
+            a service that can sign statements on-the-fly or the OP signs it
+            itself. If the later the OP needs to have a blank (only containing
+            signing_keys) metadata statement signed by the superior. Once it
+            has that it can sign the response plus the signed metadata
+            statement and construct a compounded metadata statement that can
+            be verified using the method described in <xref
+            target="verify"/>.</t>
+          </section>
         </section>
 
-        <section anchor="Clireg" title="Client Registration">
-          <t>The OP MUST support dynamic relying party registration as
-          described in <xref target="OpenID.Registration">OpenID Connect
-          Dynamic Client Registration 1.0 </xref>. The RP makes a Client
-          Registration Request including the additional metadata specified
-          above.</t>
+        <section title="Implicit Registration">
+          <t/>
 
-          <t>The RP SHOULD have the complete request signed by its superior in
-          the signing chain and MAY have it signed in advance.</t>
-        </section>
+          <figure>
+            <preamble>The trust between the entities is established using the
+            above described extensions in the first two steps of the
+            communication between an RP and an OP. How the RP found the OP in
+            the first place is out of scope for this document.</preamble>
 
-        <section anchor="cliregresp" title="Client Registration Response">
-          <t>It is unlikely that an OP can prepare a number of signed Metadata
-          statements representing relying party registration responses in
-          advance. Still if the OP wants to have the whole response signed it
-          has two choices. Either the superior signer has a service that can
-          sign statements on-the-fly or the OP signs it itself. If the later
-          the OP needs to have a blank (only containing signing_keys) metadata
-          statement signed by the superior. Once it has that it can sign the
-          response plus the signed metadata statement and construct a
-          compounded metadata statement that can be verified using the method
-          described in <xref target="verify"/>.</t>
-        </section>
-      </section>
-
-      <section title="Implicit Registration">
-        <t/>
-
-        <figure>
-          <preamble>The trust between the entities is established using the
-          above described extensions in the first two steps of the
-          communication between an RP and an OP. How the RP found the OP in
-          the first place is out of scope for this document.</preamble>
-
-          <artwork><![CDATA[------                                       ------
+            <artwork><![CDATA[------                                       ------
 |    | <--- 1) Discovery -------->           |    |
 | RP | ---- 2) Authentication request -----> | OP |
 |    |                                       |    |
 ------                                       ------     ]]></artwork>
 
-          <postamble>After the discovery and registration is completed a first
-          time, those steps SHOULD only be repeated if any changes occur (see
-          notes in respective sections below).</postamble>
-        </figure>
+            <postamble>After the discovery and registration is completed a
+            first time, those steps SHOULD only be repeated if any changes
+            occur (see notes in respective sections below).</postamble>
+          </figure>
 
-        <section title="The authentication request">
-          <t/>
+          <section title="The authentication request">
+            <t/>
+          </section>
         </section>
       </section>
     </section>
