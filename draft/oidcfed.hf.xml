@@ -680,54 +680,126 @@ Content-Type: application/json
             occur (see notes in respective sections below).</postamble>
           </figure>
 
-          <section anchor="Clireg" title="Client Registration">
+          <section anchor="Clireg" title="Client Registration Request">
             <t>The OP MUST support dynamic relying party registration as
             described in <xref target="OpenID.Registration">OpenID Connect
             Dynamic Client Registration 1.0 </xref>. The RP makes a Client
-            Registration Request including the additional metadata specified
-            above.</t>
+            Registration Request including the additional metadata claim
+            <spanx style="verb">entity_statements</spanx>.</t>
 
-            <t>The RP SHOULD have the complete request signed by its superior
-            in the signing chain and MAY have it signed in advance.</t>
+            <t>The <spanx style="verb">entity_statements</spanx> claim if
+            present includes a JSON array with one or more entity statements.
+            The RP MUST include a selfissued statements representing itself.
+            It is optional if the RP prefetches more of the potential trust
+            chains, or if it leaves up to the OP to fetch these entity
+            statements themselves. </t>
+
+            <figure>
+              <preamble>Non-normative example of a client registration
+              request:</preamble>
+
+              <artwork><![CDATA[POST /connect/register HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Host: provider.example.com
+
+{
+ "application_type": "web",
+ "redirect_uris": ["https://client.example.org/callback"],
+ "client_name": "My Example",
+ "token_endpoint_auth_method": "client_secret_basic",
+ "contacts": ["ve7jtb@example.org", "mary@example.org"],
+ "entity_statements": [
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJodHRwczovL3NlcnZpY2Vwcm92aW..."
+ ]
+}                           ------     ]]></artwork>
+            </figure>
           </section>
 
           <section anchor="cliregresp" title="Client Registration Response">
-            <t>It is unlikely that an OP can prepare a number of signed
-            Metadata statements representing relying party registration
-            responses in advance. Still if the OP wants to have the whole
-            response signed it has two choices. Either the superior signer has
-            a service that can sign statements on-the-fly or the OP signs it
-            itself. If the later the OP needs to have a blank (only containing
-            signing_keys) metadata statement signed by the superior. Once it
-            has that it can sign the response plus the signed metadata
-            statement and construct a compounded metadata statement that can
-            be verified using the method described in <xref
-            target="verify"/>.</t>
+            <t>The OP will have to process the <spanx style="verb">entity_statements</spanx>
+            content in order to establish trust with the RP. If multiple
+            entity statements are included, the OP will find the one that is
+            self issued that represents the RP entity.</t>
+
+            <t>The OP will fetch remaining entity statements using the
+            procedure described in <xref target="fetching-es">fetching entity
+            statements</xref>.</t>
+
+            <t>If the entity statements is used to establish trust, all other
+            claims in the client registration request should be ignored. The
+            resulting client registration metadata from the flattening process
+            in this specification is used instead.</t>
+
+            <t>It is left up to the discretion of the OP to choose a pattern
+            for the content of the client_id, it does not need to match the
+            entity identifeir. The OP MUST only issue one client registration
+            for each RP entity. This means that when an OP receives a client
+            registration request with a entity identifier matching one that
+            has already issued, the registration request can be considered an
+            update request for the existing client.</t>
+
+            <t>The RP MUST host a webfinger and metadata API, even if the
+            entity statement is sent as part of the request. The OP will use
+            this to refresh the trust of the client. The trust chain has a
+            limited validity, and as the trust chain expires, the OP should
+            fetch updated entity statements in order to re-establish trust
+            before further interaction with the RP.</t>
+
+            <t>TODO: Take special care that the entity statement can be
+            considered an authentication (client assertion style). In example
+            require that the aud parameter is set to the provider issuer.</t>
+          </section>
+
+          <section title="Client Registration Error Response">
+            <t>If the OP fails to establish trust with the RP, it MUST
+            indicate this to the RP using the Client Registration Error
+            Response as defined in <xref target="OpenID.Registration">OpenID
+            Connect Dynamic Client Registration 1.0</xref> with the error code
+            <spanx style="verb">federation-no-trust</spanx>.</t>
+
+            <t>The OP should include a descriptive <spanx style="verb">error_description</spanx>
+            that will aid the RP to fix the problem. </t>
           </section>
         </section>
 
         <section title="Implicit Registration">
-          <t/>
-
           <figure>
-            <preamble>The trust between the entities is established using the
-            above described extensions in the first two steps of the
-            communication between an RP and an OP. How the RP found the OP in
-            the first place is out of scope for this document.</preamble>
+            <preamble>With implicit registration the RP sends an
+            authentication request without prior registration with the
+            OP.</preamble>
 
             <artwork><![CDATA[------                                       ------
 |    | <--- 1) Discovery ------------------> |    |
 | RP | ---- 2) Authentication request -----> | OP |
 |    |                                       |    |
 ------                                       ------     ]]></artwork>
-
-            <postamble>After the discovery and registration is completed a
-            first time, those steps SHOULD only be repeated if any changes
-            occur (see notes in respective sections below).</postamble>
           </figure>
 
-          <section title="The authentication request">
-            <t/>
+          <t>The client_id of the RP MUST be set identical to the RP entity
+          identifier.</t>
+
+          <t>Without a registration process, the RP does neigther have any
+          client_secret. Instead the implicit registration model requires the
+          RP to make use of asymmetric crypto.</t>
+
+          <t>The RP MUST host a WebFinger and Metadata API according to the
+          </t>
+
+          <section title="The Authentication Request">
+            <t>The authentication request as specified in OpenID Connect
+            Core.</t>
+          </section>
+
+          <section title="Authentication Error Response">
+            <t>If the OP fails to establish trust with the RP, it should use
+            the <spanx style="verb">error_description</spanx> error code, and
+            an <spanx style="verb">error_description</spanx> that aids the RP
+            to fix what is wrong.</t>
+          </section>
+
+          <section title="Authentication at the Token endpoint">
+            <t>...</t>
           </section>
         </section>
       </section>
