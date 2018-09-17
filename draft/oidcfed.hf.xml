@@ -692,7 +692,7 @@ Content-Type: application/json
             The RP MUST include a selfissued statements representing itself.
             It is optional if the RP prefetches more of the potential trust
             chains, or if it leaves up to the OP to fetch these entity
-            statements themselves. </t>
+            statements themselves.</t>
 
             <figure>
               <preamble>Non-normative example of a client registration
@@ -759,7 +759,7 @@ Host: provider.example.com
             <spanx style="verb">federation-no-trust</spanx>.</t>
 
             <t>The OP should include a descriptive <spanx style="verb">error_description</spanx>
-            that will aid the RP to fix the problem. </t>
+            that will aid the RP to fix the problem.</t>
           </section>
         </section>
 
@@ -783,12 +783,28 @@ Host: provider.example.com
           client_secret. Instead the implicit registration model requires the
           RP to make use of asymmetric crypto.</t>
 
-          <t>The RP MUST host a WebFinger and Metadata API according to the
-          </t>
+          <t>The RP MUST host a WebFinger and Metadata API to allow the OP
+          fetch the entity statements.</t>
 
           <section title="The Authentication Request">
             <t>The authentication request as specified in OpenID Connect
             Core.</t>
+          </section>
+
+          <section title="Processing the authentication request">
+            <t>When the OP receives an incomming authentication request and
+            both the OP supports OpenID Connect Federation and the incomming
+            client_id is a valid URL, the OP should try to resolve and fetch
+            the entity statement as described in <xref
+            target="fetching-es">fetching entity statements</xref>. </t>
+
+            <t>The OP should validate possible the trust chains, and resolve
+            the RP metadata with type <spanx style="verb">openid-client</spanx>.
+            </t>
+
+            <t>The OP should consider the resolved metadata of the client </t>
+
+            <t>The OP will </t>
           </section>
 
           <section title="Authentication Error Response">
@@ -799,7 +815,10 @@ Host: provider.example.com
           </section>
 
           <section title="Authentication at the Token endpoint">
-            <t>...</t>
+            <t>The RP will have to use asymmetric crypto to authenticate to
+            the token endpoint. The RP MUST authenticate the request by
+            including the <spanx style="verb">private_key_jwt</spanx>
+            parameter, as described in OpenID Connect Core Section 9.</t>
           </section>
         </section>
       </section>
