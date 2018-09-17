@@ -40,6 +40,17 @@
       </address>
     </author>
 
+    <author fullname="Andreas &Aring;kre Solberg" initials="A.&Aring;."
+            surname="Solberg">
+      <organization abbrev="Uninett">Uninett AS</organization>
+
+      <address>
+        <email>andreas.solberg@uninett.no</email>
+
+        <uri>https://www.linkedin.com/in/andreassolberg/</uri>
+      </address>
+    </author>
+
     <author fullname="Samuel Gulliksson" initials="S." surname="Gulliksson">
       <organization abbrev="Schibsted">Schibsted Media Group</organization>
 
@@ -68,18 +79,7 @@
       </address>
     </author>
 
-    <author fullname="Andreas &Aring;kre Solberg" initials="A.&Aring;."
-            surname="Solberg">
-      <organization abbrev="Uninett">Uninett AS</organization>
-
-      <address>
-        <email>andreas.solberg@uninett.no</email>
-
-        <uri>https://www.linkedin.com/in/andreassolberg/</uri>
-      </address>
-    </author>
-
-    <date day="11" month="September" year="2018"/>
+    <date day="17" month="September" year="2018"/>
 
     <workgroup>OpenID Connect Working Group</workgroup>
 
