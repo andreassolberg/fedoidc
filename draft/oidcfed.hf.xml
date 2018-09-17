@@ -802,9 +802,13 @@ Host: provider.example.com
             the RP metadata with type <spanx style="verb">openid-client</spanx>.
             </t>
 
-            <t>The OP should consider the resolved metadata of the client </t>
+            <t>The OP should consider the resolved metadata of the client, and
+            perform these additional validation steps:</t>
 
-            <t>The OP will </t>
+            <t><list style="symbols">
+                <t>Verify that the metadata contain a public key... TODO: add
+                proper reference.</t>
+              </list></t>
           </section>
 
           <section title="Authentication Error Response">
