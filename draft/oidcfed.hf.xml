@@ -654,17 +654,8 @@ Content-Type: application/json
         trust with a relying party. Members of a federation or a community
         should agree upon which approach to use. While implementations should
         support both methods, deployments may choose to disable the use one of
-        them. The two alternatives are</t>
-
-        <t><list style="symbols">
-            <t><spanx>Explicit registration</spanx> make use of dynamic client
-            registration</t>
-
-            <t><spanx>Implicit registration</spanx> involves using the entity
-            identifier as a client_id, and send an authentication request
-            without prior pre-registration. Trust is established as part of
-            processing the incomming authentication request.</t>
-          </list></t>
+        them. The two alternatives are referred to as explicit and implicit
+        registration.</t>
 
         <section title="Explicit Registration">
           <t>This method involves performing an explicit registration of a new
@@ -725,7 +716,7 @@ Content-Type: application/json
             the first place is out of scope for this document.</preamble>
 
             <artwork><![CDATA[------                                       ------
-|    | <--- 1) Discovery -------->           |    |
+|    | <--- 1) Discovery ------------------> |    |
 | RP | ---- 2) Authentication request -----> | OP |
 |    |                                       |    |
 ------                                       ------     ]]></artwork>
