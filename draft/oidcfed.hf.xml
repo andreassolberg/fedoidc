@@ -697,6 +697,15 @@ Content-Type: application/json
             chains, or if it leaves up to the OP to fetch these entity
             statements themselves.</t>
 
+            <t>The self issued entity statement sent as part of the
+            registration request MUST include the following additional
+            parameter:</t>
+
+            <t><list style="hanging">
+                <t hangText="aud">REQUIRED. The receiver of the client
+                registration request, the trusted OP.</t>
+              </list></t>
+
             <figure>
               <preamble>Non-normative example of a client registration
               request:</preamble>
@@ -719,11 +728,13 @@ Host: provider.example.com
             </figure>
           </section>
 
-          <section anchor="cliregresp" title="Client Registration Response">
+          <section title="Processing the client registration request">
             <t>The OP will have to process the <spanx style="verb">entity_statements</spanx>
             content in order to establish trust with the RP. If multiple
             entity statements are included, the OP will find the one that is
-            self issued that represents the RP entity.</t>
+            self issued that represents the RP entity. The OP MUST verify that
+            the <spanx style="verb">aud</spanx> claim is identical to the OP
+            identifier.</t>
 
             <t>The OP will fetch remaining entity statements using the
             procedure described in <xref target="fetching-es">fetching entity
@@ -734,24 +745,22 @@ Host: provider.example.com
             resulting client registration metadata from the flattening process
             in this specification is used instead.</t>
 
-            <t>It is left up to the discretion of the OP to choose a pattern
-            for the content of the client_id, it does not need to match the
-            entity identifeir. The OP MUST only issue one client registration
-            for each RP entity. This means that when an OP receives a client
-            registration request with a entity identifier matching one that
-            has already issued, the registration request can be considered an
-            update request for the existing client.</t>
-
             <t>The RP MUST host a webfinger and metadata API, even if the
             entity statement is sent as part of the request. The OP will use
             this to refresh the trust of the client. The trust chain has a
             limited validity, and as the trust chain expires, the OP should
             fetch updated entity statements in order to re-establish trust
             before further interaction with the RP.</t>
+          </section>
 
-            <t>TODO: Take special care that the entity statement can be
-            considered an authentication (client assertion style). In example
-            require that the aud parameter is set to the provider issuer.</t>
+          <section anchor="cliregresp" title="Client Registration Response">
+            <t>It is left up to the discretion of the OP to choose a pattern
+            for the content of the client_id, it does not need to match the
+            entity identifier. The OP MUST only issue one client registration
+            for each RP entity. This means that when an OP receives a client
+            registration request with a entity identifier matching one that
+            has already issued, the registration request can be considered an
+            update request for the existing client.</t>
           </section>
 
           <section title="Client Registration Error Response">
