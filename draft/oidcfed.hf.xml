@@ -832,21 +832,23 @@ Content-Type: application/json
           <section anchor="cliregresp"
                    title="Client Registration Response">
             <t>
-              Now of the OPs side the following occurs:
+              Now on the OPs side the following occurs:
               <list style="number">
                 <t>
                   It receives the request, collects and evaluates the trust
                   chains starting with the authorityHints in the registration
-                  request.
+                  request. After having verified such chains it can verify that
+                  the signature on the received registration request is correct.
                 </t>
                 <t>
                   If it finds more then one acceptable trust chain it MUST
-                  chose one or more the terminates in one trust anchor.
+                  chose one or more that terminates in one and the same trust
+                  anchor.
                 </t>
                 <t>
-                  At this point if there already exists a client registration
-                  under the same entity_id then that MUST be regarded as
-                  invalid.
+                  At this point, if there already exists a client registration
+                  under the same entity_id then that registration MUST be
+                  regarded as invalid.
                 </t>
                 <t>
                   The OP will now construct an entity statement containing a
@@ -869,7 +871,7 @@ Content-Type: application/json
                 <t>If the RP is OK with the metadata that was the result of
                   the flattening of the received entity statement then it
                   store the configuration and can continue communicating with
-                  the OP.
+                  the OP using the agreed on metadata.
                 </t>
                 <t>If the RP was not OK, for some reason, with the received
                   entity statement then it has the choice to restart the
@@ -882,11 +884,13 @@ Content-Type: application/json
         <section title="After client registration">
           <t>
             A client registration using this specification is not expected to
-            be valid for ever. The entity statements exchanged both have
-            expiration times set. Which means that the registration will
-            eventually time out. To this can be added that the entities in
-            the federation, for a number of reasons, over time may change how
-            fast their signature will expires.
+            be valid for ever. The entity statements exchanged all have
+            expiration times. Which means that the registration will
+            eventually time out. An OP can also for some reason decided that a
+            client registration is not valid anymore. To this
+            can be added that the entities in the federation, for a number of
+            reasons, over time may change how fast their signature will expires,
+            thereby increasing or decreasing the lifetime of a trust chain.
           </t>
           <section title="What the RP MUST do">
             <t>
@@ -896,13 +900,13 @@ Content-Type: application/json
                   Starting with the OPs entity statement, resolve and verify
                   the trust chains it chose to use when constructing the
                   registration request. If those trust chains don't exist
-                  anymore or do not verify then the registration should be
+                  anymore or do not verify, then the registration should be
                   regarded as invalid and a new registration process should
                   be started.
                 </t>
                 <t>
                   If the OPs entity statement was OK it must now verify that
-                  the entity statement about itself received from the OP is
+                  the entity statement it received about itself from the OP is
                   still valid. Again, if that is not the case the
                   registration should be regarded as invalid and a new
                   registration process should be started.
