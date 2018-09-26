@@ -806,7 +806,7 @@ Content-Type: application/json
           <t>The OP should validate possible the trust chains, and resolve the
           RP metadata with type <spanx style="verb">openid-client</spanx>.</t>
 
-          <t>The OP should consider the resolved metadata of the client, and
+          <t>The OP should consider the resolved metadata of the RP, and
           perform these additional validation steps:</t>
 
           <t><list style="symbols">
