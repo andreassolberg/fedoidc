@@ -204,10 +204,11 @@
 
           <t hangText="authorityHints">OPTIONAL. A JSON object where the keys
           are the intermediate entities that may issue an entity statement
-          about the issuer entity. The value is a JSON list of entities that
-          is further up in the trust chain. The JSON array can be used to
-          simplify the selection of trust chains without the need for fetching
-          all possible authority hints.</t>
+          about the issuer entity. The value MUST be a JSON array of entities
+          that is further up in the trust chain. The array may be an empty
+          list. The JSON array can be used to simplify the selection of trust
+          chains without the need for fetching all possible authority
+          hints.</t>
         </list></t>
 
       <t>The entity statement is signed using the private key of the issuer
@@ -248,7 +249,9 @@
       "use": "sig"
     }
   ],
-  "authorityHints": ["https://edugain.org/federation"]
+  "authorityHints": {
+    "https://edugain.org/federation": []
+  }
 }]]></artwork>
 
         <postamble>(postamble)</postamble>
@@ -260,17 +263,16 @@
         entity statement. How the configuration is stored and the exact format
         is out of the scope of this specification, but it is recommended to
         allow the user to configure a list of entries containing <spanx
-        style="verb">sub</spanx>, <spanx style="verb">jwks
-          </spanx> and <spanx style="verb">metadata</spanx>. When the compound
-        metadata from the trust chain is resolved, metadata from the local
-        trust root can be applied in the <xref
-        target="flattening-metadata">metadata flattening process</xref>. This
-        allows the configuration of a provider to put trust limitations
-        applied to all metadata resolved for the various trust roots. For
-        example, a provider may trust a large federation with a metadata
-        limitation of only releasing the name and userid, and no other scopes
-        or claims. The provider may add other trust roots with a more limited
-        target group to allow for more scopes and claims.</t>
+        style="verb">sub</spanx>, <spanx style="verb">jwks</spanx> and <spanx
+        style="verb">metadata</spanx>. When the compound metadata from the
+        trust chain is resolved, metadata from the local trust root can be
+        applied in the <xref target="flattening-metadata">metadata flattening
+        process</xref>. This allows the configuration of a provider to put
+        trust limitations applied to all metadata resolved for the various
+        trust roots. For example, a provider may trust a large federation with
+        a metadata limitation of only releasing the name and userid, and no
+        other scopes or claims. The provider may add other trust roots with a
+        more limited target group to allow for more scopes and claims.</t>
       </section>
     </section>
 
