@@ -298,19 +298,19 @@
         Registration 1.0</xref> are allowed in a metadata statement.</t>
 
         <t>To that list is added: <list style="hanging">
-            <t hangText="rp_scopes"><vspace/>RECOMMENDED. JSON array
+            <t hangText="allowed_scopes"><vspace/>RECOMMENDED. JSON array
             containing a list of the <xref target="RFC6749">RFC6749</xref>
             scope values that this relying party expects to use.</t>
 
-            <t hangText="rp_claims"><vspace/>RECOMMENDED. JSON array
+            <t hangText="allowed_claims"><vspace/>RECOMMENDED. JSON array
             containing a list of the Claim Names of the Claims that the OpenID
             Client wants values for.</t>
           </list></t>
       </section>
 
       <section title="OpenID Provider Metadata">
-        <t>The metadata type identifier is <spanx style="verb">
-          openid-</spanx>provider.</t>
+        <t>The metadata type identifier is an
+          <spanx style="verb">openid-provider</spanx>.</t>
 
         <t>All parameters defined in section 3 of <xref
         target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref></t>
@@ -366,7 +366,7 @@
         target="RFC7033">WebFinger</xref>, with the <spanx style="verb">rel</spanx>
         value: <spanx style="verb">
             https://openid.net/specs/federation/1.0/entity</spanx>. The <spanx
-        style="verb">resouce</spanx> parameter is set the entity identifier
+        style="verb">resource</spanx> parameter is set the entity identifier
         from whom we would like to issue entity statements.</t>
 
         <t>The provider performs normalization rules to the entity identifier
@@ -423,7 +423,7 @@ Content-Type: application/jrd+json
 
           <t><list style="hanging">
               <t hangText="target">REQUIRED. The entity identifier of the
-              target entity for which to issue metadata.</t>
+              target entity for which you want metadata.</t>
 
               <t hangText="prefetch">OPTIONAL. If left out, it is assumed to
               be <spanx style="verb">false</spanx>. If set to <spanx
@@ -434,11 +434,11 @@ Content-Type: application/jrd+json
           response MUST be a JSON array including signed entity statements.
           The content type MUST be set to <spanx style="verb">
             application/json</spanx>. If the issuing entity does not
-          reckognize the target, it should return an empty JSON array. The
+          recognize the target, it should return an empty JSON array. The
           returned list of entity statements SHOULD include a statement issued
           by the issuing entity about the entity represented in the target
           parameter. The issuing entity may also decide to prefetch additional
-          entity statements that may be relevant to the requestor.</t>
+          entity statements that may be relevant to the requester.</t>
 
           <figure>
             <preamble>The following is a non-normative example of an API
@@ -466,7 +466,7 @@ Content-Type: application/json
         </section>
 
         <section title="Trust negotiation">
-          <t>TBD. Resolving metadata for a specifc type of metadata, for a
+          <t>TBD. Resolving metadata for a specific type of metadata, for a
           given peer. The relying party may ask a specific provider to resolve
           the relying party openid-client metadata with its own configured
           trust root. The result may tell what operations, scopes and claims
@@ -474,8 +474,8 @@ Content-Type: application/json
         </section>
 
         <section title="Entity listings">
-          <t>TBD. Return an JSON List of all entities that the entity may
-          issue statements about.</t>
+          <t>TBD. Return an JSON List of all entities that the entity is
+            prepared to issue statements about.</t>
         </section>
       </section>
     </section>
