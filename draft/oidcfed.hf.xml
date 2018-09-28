@@ -237,18 +237,20 @@
       "scopes": ["openid", "profile", "email", "phone"]
     }
   },
-  "jwks": [
-    {
-      "alg": "RS256",
-      "e": "AQAB",
-      "ext": true,
-      "key_ops": ["verify"],
-      "kid": "key1",
-      "kty": "RSA",
-      "n": "pnXBOusEANuug6ewezb9J_...",
-      "use": "sig"
-    }
-  ],
+  "jwks": {
+    "keys": [
+      {
+        "alg": "RS256",
+        "e": "AQAB",
+        "ext": true,
+        "key_ops": ["verify"],
+        "kid": "key1",
+        "kty": "RSA",
+        "n": "pnXBOusEANuug6ewezb9J_...",
+        "use": "sig"
+      }
+    ]
+  },
   "authorityHints": {
     "https://edugain.org/federation": []
   }
