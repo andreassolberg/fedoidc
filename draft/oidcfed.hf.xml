@@ -202,7 +202,7 @@
           metadata</xref>. An entity statement may contain multiple metadata
           statement, but only one for each metadata type.</t>
 
-          <t hangText="authorityHints">OPTIONAL. A JSON object where the keys
+          <t hangText="authority_hints">OPTIONAL. A JSON object where the keys
           are the intermediate entities that may issue an entity statement
           about the issuer entity. The value MUST be a JSON array of entities
           that is further up in the trust chain. The array may be an empty
@@ -251,7 +251,7 @@
       }
     ]
   },
-  "authorityHints": {
+  "authority_hints": {
     "https://edugain.org/federation": []
   }
 }]]></artwork>
@@ -495,13 +495,13 @@ Content-Type: application/json
                title="Fetching entity statements to establish a trust chain">
         <t>The seeking entity should always start to ask the remote peer
         entity about its self-issued entity statement. This entity statement
-        MAY contain an list of intermediate entities in the authorityHints
+        MAY contain an list of intermediate entities in the authority_hints
         claim.</t>
 
-        <t>The seeking entity may iterate through the list of authorityHints,
+        <t>The seeking entity may iterate through the list of authority_hints,
         and request entity statement on the remote peer from each of the
         intermediate. It may further iterate intermediate entity statements
-        for their authorityHints, and so on. The seeking entity should never
+        for their authority_hints, and so on. The seeking entity should never
         attempt to fetch entity statements it already have fetched in this
         process (loop prevention).</t>
 
@@ -647,7 +647,7 @@ Content-Type: application/json
         target="OpenID.Registration">OpenID Connect Dynamic Client
         Registration 1.0</xref>.</t>
 
-        <t>It is assumed that an federation entity has a set of authorityHints
+        <t>It is assumed that an federation entity has a set of authority_hints
         and knowledge about which trust anchor that can be found at the end of
         a trust chain starting in each authorityHint. How the entity has
         received this knowledge is outside the scope of this document.</t>
@@ -672,12 +672,12 @@ Content-Type: application/json
                 contain more then one.</t>
 
                 <t>Based on the trust anchors referenced in the subset of
-                trust chains, the RP will choose a set of authorityHints from
+                trust chains, the RP will choose a set of authority_hints from
                 its own set that terminates in those trust anchors.</t>
 
                 <t>The RP will now construct a self-signed entity statement
                 where the metadata statement chosen is influence by the OPs
-                metadata and the authorityHints specified are picked by the
+                metadata and the authority_hints specified are picked by the
                 process described above.</t>
 
                 <t>The entity statement is sent to the <spanx style="verb">federation_registration_endpoint
@@ -688,7 +688,7 @@ Content-Type: application/json
           <section anchor="cliregresp" title="Client Registration Response">
             <t>Now on the OPs side the following occurs: <list style="number">
                 <t>It receives the request, collects and evaluates the trust
-                chains starting with the authorityHints in the registration
+                chains starting with the authority_hints in the registration
                 request. After having verified such chains it can verify that
                 the signature on the received registration request is
                 correct.</t>
@@ -704,7 +704,7 @@ Content-Type: application/json
                 <t>The OP will now construct an entity statement containing a
                 description of the RPs metadata that the OP finds acceptable.
                 To the entity statement it will add one or more
-                authorityHints, from its collection, that terminates in the
+                authority_hints, from its collection, that terminates in the
                 trust anchor chosen above.</t>
 
                 <t>It will sign and return the signed entity statement to the
@@ -714,7 +714,7 @@ Content-Type: application/json
             <t>Back at the RP it will: <list style="number">
                 <t>Verify the correctness of the received entity statement.
                 Making sure that the trust chains starting at the
-                authorityHints terminates in trust anchors that where
+                authority_hints terminates in trust anchors that where
                 referenced in the entity statement it sent to the OP.</t>
 
                 <t>If the RP is OK with the metadata that was the result of
@@ -1140,7 +1140,7 @@ Content-Type: application/json
   },
   "iss": "https://umu.se/openid",
   "sub": "https://umu.se/openid",
-  "authorityHints": {
+  "authority_hints": {
     "https://www.sunet.se/swamid": ["https://edugain.org/oidc"],
     "https://kalmar2.org/openid": []
   },
@@ -1166,7 +1166,7 @@ Content-Type: application/json
         a complete chain from the self issued statement to the locally
         configured trust root, which contain SWAMID.</t>
 
-        <t>The information found in the authorityHints is critical in order to
+        <t>The information found in the authority_hints is critical in order to
         dynamically discover the trust chain. If such hints are not present,
         the relying party may resume to fixed configured trust roots to ask
         for trust statements.</t>
@@ -1412,7 +1412,7 @@ Host: idp.umu.se
 
       <section title="Provider fetches entity statements">
         <t>The provider starts with the client identifier https://foodl.org/
-        and uses WebFinger, the metadata API endpoints and the authorityHints
+        and uses WebFinger, the metadata API endpoints and the authority_hints
         in order to establish a full trust chain to the trust root.</t>
 
         <t>In this case there are two possible trust chains:</t>
