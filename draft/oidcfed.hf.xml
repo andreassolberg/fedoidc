@@ -225,13 +225,13 @@
   "iat": 1516239022,
   "exp": 1516298022,
   "metadata": {
-    "openid-provider": {
+    "openid_provider": {
       "issuer": "https://ntnu.no",
       "organization": "NTNU",
       "id_token_signing_alg_values_supported": ["RS256", "RS384",
                                                 "RS512"]
     },
-    "openid-client": {
+    "openid_client": {
       "organization": "NTNU",
       "grant_types_supported": ["authorization_code", "implicit"],
       "scopes": ["openid", "profile", "email", "phone"]
@@ -293,7 +293,7 @@
 
       <section title="OpenID Connect Relying Party Metadata">
         <t>The metadata type identifier is <spanx style="verb">
-          openid-client</spanx>.</t>
+          openid_client</spanx>.</t>
 
         <t>All parameters defined in section 2 of <xref
         target="OpenID.Registration">OpenID Connect Dynamic Client
@@ -311,7 +311,7 @@
       </section>
 
       <section title="OpenID Provider Metadata">
-        <t>The metadata type identifier is an <spanx style="verb">openid-provider</spanx>.</t>
+        <t>The metadata type identifier is an <spanx style="verb">openid_provider</spanx>.</t>
 
         <t>All parameters defined in section 3 of <xref
         target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref></t>
@@ -339,7 +339,7 @@
 
       <section title="OAuth Client">
         <t>The metadata type identifier is <spanx style="verb">
-          openid-client</spanx>.</t>
+          openid_client</spanx>.</t>
       </section>
 
       <section title="OAuth Protected Resources">
@@ -469,7 +469,7 @@ Content-Type: application/json
         <section title="Trust negotiation">
           <t>TBD. Resolving metadata for a specific type of metadata, for a
           given peer. The relying party may ask a specific provider to resolve
-          the relying party openid-client metadata with its own configured
+          the relying party openid_client metadata with its own configured
           trust root. The result may tell what operations, scopes and claims
           the relying party is allowed to use.</t>
         </section>
@@ -805,7 +805,7 @@ Content-Type: application/json
           statements</xref>.</t>
 
           <t>The OP should validate possible the trust chains, and resolve the
-          RP metadata with type <spanx style="verb">openid-client</spanx>.</t>
+          RP metadata with type <spanx style="verb">openid_client</spanx>.</t>
 
           <t>The OP should consider the resolved metadata of the RP, and
           perform these additional validation steps:</t>
@@ -1044,7 +1044,7 @@ Content-Type: application/json
   {
     "sub": "https://www.sunet.se/swamid",
     "metadata": {
-      "openid-provider": {"LoaMax": "http://swamid.se/LoA/substantial"}
+      "openid_provider": {"LoaMax": "http://swamid.se/LoA/substantial"}
     },
     "jwks": [
       {
@@ -1122,7 +1122,7 @@ Content-Type: application/json
   "iat": 1538390905,
   "exp": 1538394505,
   "metadata": {
-    "openid-provider": {
+    "openid_provider": {
       "authorization_endpoint": "https://idp.umu.se/openid/authorization",
       "token_endpoint": "https://idp.umu.se/openid/token",
       "response_types_supported": ["code", "code id_token", "token"],
@@ -1215,7 +1215,7 @@ Content-Type: application/json
   "iat": 1538383588,
   "exp": 1538387188,
   "metadata": {
-    "openid-provider": {
+    "openid_provider": {
       "subject_types_supported": ["pairwise"],
       "id_token_signing_alg_values_supported": ["RS256", "RS512"],
       "organization": "University of Ume?",
@@ -1241,7 +1241,7 @@ Content-Type: application/json
         </figure>
 
         <t>Notice that the entity statement about University of Ume&aring;
-        also contains an entry for openid-client metadata. This indicates that
+        also contains an entry for openid_client metadata. This indicates that
         SWAMID express this university to be trusted to issue its own OpenID
         clients without the need for registering these directly in SWAMID.</t>
 
@@ -1279,7 +1279,7 @@ Content-Type: application/json
         entity statements. In order to extract the needed metadata, we need to
         look at the metadata type relevant in the given context. In this case,
         we are establishing trust with an OpenID Provider, and we take a look
-        at the <spanx style="varb">openid-provider</spanx> metadata object of
+        at the <spanx style="varb">openid_provider</spanx> metadata object of
         the trust chain:</t>
 
         <figure>
@@ -1367,7 +1367,7 @@ Host: idp.umu.se
   {
     "sub": "https://edugain.org/oidc",
     "metadata": {
-      "openid-client": {
+      "openid_client": {
         "rp_scopes": ["openid", "userid-targetedid", "eduperson"],
         "response_types": ["code", "code id_token"]
       }
@@ -1388,7 +1388,7 @@ Host: idp.umu.se
   {
     "sub": "https://www.sunet.se/swamid",
     "metadata": {
-      "openid-client": {
+      "openid_client": {
         "rp_scopes": ["openid", "userid-persistent", "fs"],
         "response_types": ["code", "code id_token"]
       }
