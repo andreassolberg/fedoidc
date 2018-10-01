@@ -311,8 +311,7 @@
       </section>
 
       <section title="OpenID Provider Metadata">
-        <t>The metadata type identifier is an
-          <spanx style="verb">openid-provider</spanx>.</t>
+        <t>The metadata type identifier is an <spanx style="verb">openid-provider</spanx>.</t>
 
         <t>All parameters defined in section 3 of <xref
         target="OpenID.Discovery">OpenID Connect Discovery 1.0</xref></t>
@@ -435,12 +434,12 @@ Content-Type: application/jrd+json
             </list> As long as the request is understood and correct, the
           response MUST be a JSON array including signed entity statements.
           The content type MUST be set to <spanx style="verb">
-            application/json</spanx>. If the issuing entity does not
-          recognize the target, it should return an empty JSON array. The
-          returned list of entity statements SHOULD include a statement issued
-          by the issuing entity about the entity represented in the target
-          parameter. The issuing entity may also decide to prefetch additional
-          entity statements that may be relevant to the requester.</t>
+            application/json</spanx>. If the issuing entity does not recognize
+          the target, it should return an empty JSON array. The returned list
+          of entity statements SHOULD include a statement issued by the
+          issuing entity about the entity represented in the target parameter.
+          The issuing entity may also decide to prefetch additional entity
+          statements that may be relevant to the requester.</t>
 
           <figure>
             <preamble>The following is a non-normative example of an API
@@ -477,7 +476,7 @@ Content-Type: application/json
 
         <section title="Entity listings">
           <t>TBD. Return an JSON List of all entities that the entity is
-            prepared to issue statements about.</t>
+          prepared to issue statements about.</t>
         </section>
       </section>
     </section>
@@ -2006,40 +2005,6 @@ def unpack(jwt, sign_keys):
         instance, use the method outlined in <xref
         target="flattening-metadata"/></t>
       </section>
-    </section>
-
-    <section anchor="TBD" title="Open Issues">
-      <t>The following open issues remain to be addressed in this
-      specification.</t>
-
-      <t><list style="symbols">
-          <t>How are federation operator keys retrieved?</t>
-
-          <t>A mechanism is needed for key rotation of federation operator
-          keys for long-term security and maintainability of federations.</t>
-
-          <t>A mechanism is needed for key revocation.</t>
-
-          <t>A mechanism may be needed for bounding key lifetimes.</t>
-
-          <t>What is the syntax for federation identifiers? Is it the URL of
-          the root of the federation operator's metadata?</t>
-
-          <t>Can both <spanx style="verb">metadata_statements</spanx> and
-          <spanx style="verb">metadata_statement_uris</spanx> be present or
-          are they mutually exclusive?</t>
-
-          <t>How are signature timeouts represented? What happens after the
-          timeout is expired?</t>
-
-          <t>Consider adding rationale explaining the rule "The number A is a
-          subset of the number B if A is less or equal to B".</t>
-
-          <t>Why is the Constructing Entity Metadata appendix not normative? I
-          believe that it should be.</t>
-
-          <t>Change section titles "*** ***" to something meaningful.</t>
-        </list></t>
     </section>
 
     <section anchor="Notices" title="Notices">
