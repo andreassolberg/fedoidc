@@ -976,6 +976,92 @@ Content-Type: application/json
       </reference>
     </references>
 
+    <section title="Illustrative example of OpenID Connect flow">
+      <t>A service Foodle would like to offer its services to all identity
+      providers in eduGAIN. Foodle is manaed and registrered by the university
+      NTNU. NTNU is part of the norwegian Feide federation. Foodle is also
+      directly trusted in the swedish SWAMID federation. Both Feide and SWAMID
+      are part of the international eduGAIN federation.</t>
+
+      <section title="Initial setup of Foodle">
+        <t>The Foodle service choose to use the entity identifier <spanx
+        style="verb">https://foodl.org/</spanx>. And upon deployment, Foodle
+        is setup with a RSA keypair, with the following public key:</t>
+
+        <figure>
+          <artwork><![CDATA[{
+  "kid": "key1",
+  "use": "sig",
+  "kty": "RSA",
+  "alg": "RS256",
+  "n": "pnXBOusEANuug6ewezb9J_XbxbSGEISyA75wBGkerPNg6WTXmmxJ-DV1U4sCuRqhSdo3Uncmw6-01bZKCtAyRHT_TOZN2TMfNPRsfLkOstVofyfxg5oIWViLX9IDG_iZVdq6_T6yOuufOIvqpaeBMwSKuDXHNa_DU0aUu_3kOAc5_2hD4Dq-XXtum-oix2EPkNSbFfPqFIp5n4gS1XrzGzuNQiDw82k-H6mWN0wlVWfqLxJA9DZikAX7x9feipn36wxDH-XUlzDDUi3nfnC8GSkT-CYII3oZPsIgMV527iQGVsehIV9KqTF2FnaP83cqV9YgvMfhs1wrx4L3Z-3B8Q",
+  "e": "AQAB",
+  "key_ops": ["verify"],
+  "ext": true
+}]]></artwork>
+        </figure>
+
+        <t>Foodle offers a WebFinger interface and metadata API according to
+        this specification, with the ability to issue entity statements about
+        itself.</t>
+      </section>
+
+      <section title="Federation setup">
+        <t>How trust is established and entities becomes part of a federation
+        is out of scope of this specification. But it could involve some kind
+        of non-technical contract, agreement or term of use that is
+        established, followed by a federation or trust issuer to register the
+        entity identifier, public key and a set of metadata that restricts the
+        delegated trust that is represented in the entity statement about the
+        joining party.</t>
+
+        <t>The following example, assumes the following trust relations is
+        established, and the following entities are able to issue entity
+        statements:</t>
+
+        <t><list style="symbols">
+            <t>Foodle issues an entity statement about it self</t>
+
+            <t>NTNU issues an entity statement about Foodle</t>
+
+            <t>SWAMID issues an entity statement about Foodle</t>
+
+            <t>Feide issues an entity statement about NTNU</t>
+
+            <t>eduGAIN issues an entity statement about Feide</t>
+
+            <t>eduGAIN issues an entity statement about SWAMID</t>
+
+            <t>SWAMID issues an entity statement about the university of
+            Ume&aring; - en OpenID provider for emplyees and students in
+            Ume&aring;</t>
+          </list>Foodle has a local trust root configuration that looks like
+        this:</t>
+
+        <figure>
+          <artwork><![CDATA[artwork]]></artwork>
+        </figure>
+      </section>
+
+      <section title="User choose to login at Foodle">
+        <t>Let us assume a student from Ume&aring; would like to login at
+        Foodle. Some sort of discovery process involves the end user choosing
+        an OpenID provider. OpenID Discovery using the e-mail address is one
+        option. Foodle presenting a list of available providers for the user
+        to choose from is another.</t>
+
+        <t>After the discovery process, Foodle knows that the user would like
+        to login using the OpenID provider with entity identifier <spanx
+        style="verb">https://www.umu.se/openid</spanx>.</t>
+      </section>
+
+      <section title="Foodle discover the OpenID provider">
+        <t>Foodle normalizes the entity identifier of the OpenID Provider, and
+        performs a WebFinger request to resolve the metadata API. Foodle then
+        fetches the self issued entity statement from Ume&aring;</t>
+      </section>
+    </section>
+
     <section anchor="app-additional" title="Illustrative Example">
       <t>The story is that the organization UNINETT has applied and been
       accepted as a member of two federations: Feide and SWAMID.</t>
